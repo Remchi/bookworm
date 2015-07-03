@@ -1,5 +1,5 @@
 <div class="list-group">
   {{#each books as |book|}}
-    <a class="list-group-item" href="">{{book.title}}</a>
+    {{#link-to 'books.book' book class="list-group-item"}}{{book.title}}{{/link-to}}
   {{/each}}
 </div>
