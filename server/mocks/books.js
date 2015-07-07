@@ -30,7 +30,13 @@ module.exports = function(app) {
   });
 
   booksRouter.post('/', function(req, res) {
-    res.status(201).end();
+    var newBook = req.body.book;
+    var newId = books.length + 1;
+    newBook.id = newId;
+    books.push(newBook);
+    res.send({
+      book: newBook
+    });
   });
 
   booksRouter.get('/:id', function(req, res) {
