@@ -1,5 +1,7 @@
 <div class="list-group">
   {{#each books as |book|}}
-    {{#link-to 'books.book' book class="list-group-item"}}{{book.title}}{{/link-to}}
+    {{#unless book.isNew}}
+      {{#link-to 'books.book' book class="list-group-item"}}{{book.title}}{{/link-to}}
+    {{/unless}}
   {{/each}}
 </div>
