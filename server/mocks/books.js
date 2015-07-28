@@ -46,22 +46,39 @@ module.exports = function(app) {
   booksRouter.post('/', function(req, res) {
     var newBook = req.body.data.attributes;
     var newId = books.length + 1;
-
-    books.push({
-      title: newBook.title,
-      descrition: newBook.description,
-      author: newBook.author,
-      id: newId
+    var bookTitles = [];
+    books.forEach(function(item) {
+      bookTitles.push(item.title);
     });
 
-    res.set('Content-Type', 'application/vnd.api+json');
-    res.send({
-      data: {
-        type: 'books',
-        id: newId,
-        attributes: newBook
-      }
-    });
+    if (bookTitles.indexOf(newBook.title) !== -1) {
+      res.status(400).send({
+        errors: [
+          {
+            source: { pointer: '/data/attributes/title' },
+            detail: 'must be unique'
+          }
+        ]
+      });
+    } else {
+      books.push({
+        title: newBook.title,
+        descrition: newBook.description,
+        author: newBook.author,
+        id: newId
+      });
+
+      res.set('Content-Type', 'application/vnd.api+json');
+      res.send({
+        data: {
+          type: 'books',
+          id: newId,
+          attributes: newBook
+        }
+      });
+
+    }
+
   });
 
   booksRouter.get('/:id', function(req, res) {
@@ -75,20 +92,39 @@ module.exports = function(app) {
   booksRouter.patch('/:id', function(req, res) {
     var bookAttrs = req.body.data.attributes;
     var bookId = req.param('id');
+
+    var bookTitles = [];
     books.forEach(function(item) {
-      if (item.id === parseInt(bookId)) {
-        item.title = bookAttrs.title;
-        item.description = bookAttrs.description;
-        item.author = bookAttrs.author;
+      if (item.id !== parseInt(bookId)) {
+        bookTitles.push(item.title);
       }
     });
-    res.send({
-      data: {
-        type: 'books',
-        id: bookId,
-        attributes: bookAttrs
-      }
-    });
+
+    if (bookTitles.indexOf(bookAttrs.title) !== -1) {
+      res.status(400).send({
+        errors: [
+          {
+            source: { pointer: '/data/attributes/title' },
+            detail: 'must be unique'
+          }
+        ]
+      });
+    } else {
+      books.forEach(function(item) {
+        if (item.id === parseInt(bookId)) {
+          item.title = bookAttrs.title;
+          item.description = bookAttrs.description;
+          item.author = bookAttrs.author;
+        }
+      });
+      res.send({
+        data: {
+          type: 'books',
+          id: bookId,
+          attributes: bookAttrs
+        }
+      });
+    }
   });
 
   booksRouter.delete('/:id', function(req, res) {
