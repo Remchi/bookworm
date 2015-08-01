@@ -17,6 +17,7 @@ module.exports = function(app) {
   var morgan  = require('morgan');
   app.use(morgan('dev'));
   app.use(bodyParser.json({ type: 'application/vnd.api+json'}));
+  app.use(bodyParser.json({ type: 'application/json'}));
 
   mocks.forEach(function(route) { route(app); });
   proxies.forEach(function(route) { route(app); });

@@ -3,7 +3,7 @@
 <form {{action 'submit' on='submit'}}>
   <div class="form-group {{if errors.title 'has-error'}}">
     <label for="">Title</label>
-    {{input class="form-control" value=book.title action="validateTitle" on="focus-out" }}
+    {{input class="form-control" value=book.title focus-out="validateTitle" }}
     {{#each errors.title as |error|}}
       <span class="help-block">{{error.message}}</span>
     {{/each}}
@@ -11,7 +11,7 @@
 
   <div class="form-group {{if errors.author 'has-error'}}">
     <label for="">Author</label>
-    {{input class="form-control" value=book.author action="validateAuthor" on="focus-out"}}
+    {{input class="form-control" value=book.author focus-out="validateAuthor"}}
     {{#each errors.author as |error|}}
       <span class="help-block">{{error.message}}</span>
     {{/each}}

@@ -15,5 +15,12 @@
     <ul class="nav navbar-nav">
       {{#link-to 'books' tagName="li"}}<a href>Books</a>{{/link-to}}
     </ul>
+    <ul class="nav navbar-nav navbar-right">
+      {{#if session.isAuthenticated}}
+        <li><a {{action 'logout'}}>Logout</a></li>
+      {{else}}
+        {{#link-to 'login' tagName="li"}}<a href>Log in</a>{{/link-to}}
+      {{/if}}
+    </ul>
   </div><!-- /.navbar-collapse -->
 </nav>
